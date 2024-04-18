@@ -1,0 +1,132 @@
+@model ShowMessagesViewModel;
+
+@{
+    ViewData["Title"] = "Сообщения";
+    var incomings = new List<string>{
+"Все",
+"Отправленные",
+"Входящие"
+};
+    var statuses = new List<string>{
+"Все",
+"Прочитанные",
+"Непрочитанные"
+};
+    @* var logins = Model.Messages.Select(x => x.From).Distinct(); *@
+}
+
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Список сообщений</h2>
+
+    <div class="filters-form">
+        @using (Html.BeginForm("FilterMessages", "Messages", Model))
+        {
+            @* <form action="/Messages/FilterMessages" method="get" class="message-filter-form"> *@
+            <div class="row justify-content-between">
+                @* <div class="col-md-2">
+            <div class="form-group">
+            @Html.DropDownListFor(Model => Model.Filters.TypeOfDispatchFilter, new SelectList(incomings))
+            </div>
+            </div> *@
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="@Model.Filters.SenderFilter">Логин отправителя:</label>
+                        @Html.DropDownListFor(Model => Model.Filters.SenderFilter, new SelectList(ViewBag.Senders), new
+                            { @class = "btn btn-secondary btn-sm" })
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="@Model.Filters.StartDate">Начальная дата отправки:</label>
+                        <input type="date" asp-for="@Model.Filters.StartDate" class="form-control">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="@Model.Filters.EndDate">Конечная дата отправки:</label>
+                        <input type="date" asp-for="@Model.Filters.EndDate" class="form-control">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="@Model.Filters.StatusFilter">Статус сообщения:</label>
+
+                        @Html.DropDownListFor(Model => Model.Filters.StatusFilter, new SelectList(statuses), new
+                            {
+                                @class = "btn btn-secondary btn-sm"
+                            })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-success" id="filters-button">Применить фильтры</button>
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+
+    <table class="table  table-striped" id="table">
+        <tr>
+            <th>Дата отправки</th>
+            <th>От кого</th>
+            <th>Тема сообщения</th>
+            <th>Статус</th>
+        </tr>
+        @foreach (var item in Model.Messages)
+        {
+            <tr>
+                <td>@{
+                        TimeZoneInfo userTimeZone = TimeZoneInfo.Local;
+                        DateTimeOffset dbDateTimeOffset = item.SentDate;
+                        DateTimeOffset userDateTimeOffset = TimeZoneInfo.ConvertTime(dbDateTimeOffset, userTimeZone);
+                    }
+                    @userDateTimeOffset.ToString("yyyy-MM-dd HH:mm:ss")
+                </td>
+
+                <td>@item.From</td>
+                <td>@item.Theme</td>
+                <td>@item.Status</td>
+                <td>
+                    @Html.ActionLink("Открыть сообщение", "ShowMessage", new { id = item.ID, login = Model.Login })
+                    @if (item.Status != "Прочитано" && item.From != Model.Login)
+                    {
+                        <span>|</span>
+                        @Html.ActionLink("Пометить прочитанным", "SetReadStatus", new { id = item.ID, login = item.To })
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+
+    @using (Html.BeginForm("SendMessage", "Messages", new Message { From = Model.Login }))
+    {
+        <button type="submit" class="btn btn-primary">Написать...</button>
+    }
+
+    <script>
+        let table = document.getElementById('table');
+        let rows = table.getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            let cells = rows[i].getElementsByTagName('td');
+            if (cells.length >= 4) { 
+                let statusCell = cells[3]; 
+
+                let statusText = statusCell.innerText.trim();
+
+                if (statusText === "Не прочитано") {
+                    rows[i].classList.add('haventread');
+                } else {
+                    rows[i].classList.add('read'); 
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>

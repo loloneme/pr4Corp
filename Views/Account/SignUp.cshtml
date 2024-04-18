@@ -1,0 +1,50 @@
+@model pr4.Models.User;
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <h1>Регистрация</h1>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <h3>@ViewBag.ErrorMessage</h3>
+    }
+
+    @using (Html.BeginForm("SignUp", "Account", FormMethod.Post))
+    {
+        <div class="form-group">
+            <label asp-for="Login">Логин</label><br />
+            <input type="text" asp-for="Login" required />
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">Пароль</label><br />
+            <input type="password" asp-for="Password" required />
+        </div>
+        <div class="form-group">
+            <label asp-for="Surname">Фамилия</label><br />
+            <input type="text" asp-for="Surname" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Name">Имя</label><br />
+            <input type="text" asp-for="Name" required />
+        </div>
+        <div class="form-group">
+            <label asp-for="Patronymic">Отчество</label><br />
+            <input type="text" asp-for="Patronymic" />
+        </div>
+        <div class="form-group sign-up-button">
+            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+        </div>
+    }
+</body>
+
+</html>

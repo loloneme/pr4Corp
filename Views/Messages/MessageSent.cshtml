@@ -1,0 +1,16 @@
+@ViewData["Title"] = "Отправлено";
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отправить сообщение</title>
+
+</head>
+
+<body>
+    <h1>Ваше сообщение пользователю @ViewBag.To было успешно отправлено!</h1>
+    @Html.ActionLink("Вернуться к сообщениям", "ShowMessages", new {login = ViewBag.Login})
+</body>

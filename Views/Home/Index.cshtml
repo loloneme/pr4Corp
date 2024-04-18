@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">       
+
+    <button onclick="window.location.href='/Account/SignIn'" class="btn btn-primary">Вход</button>
+    @* @using(Html.BeginForm("SignUp", "Account", new User{})) {
+        <input type="submit" value="Зарегистрироваться" />
+    } *@
+    <button onclick="window.location.href='/Account/SignUp'" class="btn btn-primary">Регистрация</button>
+</div>

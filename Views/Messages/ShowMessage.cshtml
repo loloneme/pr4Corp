@@ -1,0 +1,46 @@
+@model pr4.Models.Message;
+
+@{ViewData["Title"] = "Сообщение";}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр сообщения</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .email {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        .email h2 {
+            margin-top: 0;
+        }
+        .email p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="back">
+            @Html.ActionLink("Вернуться к сообщениям", "ShowMessages", new {login = Model.To})
+    </div>
+    <div class="email">
+        <h2>Тема: @Model.Theme</h2>
+        <p><strong>От: </strong>@Model.From</p>
+        <p><strong>Дата: </strong>@{
+                        TimeZoneInfo userTimeZone = TimeZoneInfo.Local;
+                        DateTimeOffset dbDateTimeOffset = Model.SentDate;
+                        DateTimeOffset userDateTimeOffset = TimeZoneInfo.ConvertTime(dbDateTimeOffset, userTimeZone);
+                    }
+                    @userDateTimeOffset.ToString("yyyy-MM-dd HH:mm:ss")</p>
+        <p><strong>Кому: </strong>@Model.To</p>
+        <hr>
+        <p>@Model.Text</p>
+    </div>
+</body>
+</html>

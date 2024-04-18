@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+
+@model IEnumerable<pr4.Models.User>;
+
+<h2>Список пользователей</h2>
+<table class="table">
+    <tr>
+        <th>Код</th>
+        <th>Логин</th>
+        <th>Фамилия</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ID</td>
+            <td>@item.Login</td>
+            <td>@item.Surname</td>
+            <td>@item.Name</td>
+            <td>@item.Patronymic</td>
+        </tr>
+    }
+</table>

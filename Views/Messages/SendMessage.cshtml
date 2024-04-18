@@ -1,0 +1,43 @@
+@model pr4.Models.Message;
+
+@{ViewData["Title"] = "Написать";}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отправить сообщение</title>
+
+</head>
+
+<body>
+    <h1>Напишите сообщение</h1>
+
+    @if (ViewBag.ErrorMessage != null){
+        <h3>@ViewBag.ErrorMessage</h3>
+    }
+
+
+    @using (Html.BeginForm("SendMessage", "Messages", FormMethod.Post)){
+        <div class="form-group">
+            <label asp-for="To">Кому:</label> 
+            <input type="text" asp-for="To" required>
+        </div>
+        <div class="form-group">
+            <label asp-for="Theme">Тема:</label>
+            <input type="text" asp-for="Theme">
+        </div>
+        <div class="form-group">
+            <label asp-for="Text">Текст сообщения:</label>
+            <textarea class="form-control" rows="3" asp-for="Text">Ваше сообщение здесь...</textarea>
+        </div>
+        <input type="hidden" asp-for="SentDate" value="@DateTimeOffset.UtcNow"/>
+        <input type="hidden" asp-for="From"/>
+        <input type="hidden" asp-for="Status" value="Не прочитано"/>
+        <div class="send-msg-button">
+            <input type="submit" class="btn btn-primary" value="Отправить"/>
+        </div>
+}
+</body>

@@ -1,0 +1,59 @@
+/* .form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 100%;
+    max-width: 150px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+} */
+a {
+    color: black; /* Изменяет цвет ссылки на синий */
+}
+
+.row{
+    align-items: center;
+}
+
+.filters-form{
+    margin-top: 15px;
+    margin-bottom: 15px;;
+}
+
+.filters-button{
+    height: 50px;
+}
+
+.sign-up-button, .sign-in-button, .send-msg-button, .back{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#table .haventread{
+    background-color: rgb(178, 93, 93);
+}
+
+#table .read{
+    background-color: white;
+}
