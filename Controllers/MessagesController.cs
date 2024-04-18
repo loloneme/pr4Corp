@@ -18,12 +18,13 @@ public class MessagesController : Controller
     public IActionResult ShowMessages(string login)
     {
         
-        var msgList = db.Message.Where(x => x.To == login || x.From == login).OrderBy(x => x.SentDate);
-        ViewBag.Senders = msgList.Select(x => x.From).Distinct().ToList();
-        ViewBag.Senders.Insert(0, "Все");
+        // var msgList = db.Message.Where(x => x.To == login || x.From == login).OrderBy(x => x.SentDate);
+        // ViewBag.Senders = msgList.Select(x => x.From).Distinct().ToList();
+        // ViewBag.Senders.Insert(0, "Все");
+        // ViewBag.UserInfo = db.User.Where(x => x.Login == login).Select(x => new {Name = x.Surname + " " + x.Name + " " + x.Patronymic}).First();
 
         var ViewModel = new ShowMessagesViewModel{
-            Messages = msgList,
+            // Messages = db.Message.Where(x => x.To == login || x.From == login).OrderBy(x => x.SentDate),
             Filters = new FiltersModel{
                     StatusFilter = "Все",
                     // StartDate
@@ -32,8 +33,9 @@ public class MessagesController : Controller
             },
             Login = login
         };
+        return FilterMessages(ViewModel);
         
-        return View(ViewModel);
+        // return View(ViewModel);
     }
 
     public IActionResult ShowMessage(int id, string login)
@@ -41,6 +43,12 @@ public class MessagesController : Controller
         SetReadStatus(id, login);
         
         return View(db.Message.Find(id));
+    }
+
+    public IActionResult SetReadStatusWithRedirect(int id, string login){
+        SetReadStatus(id, login);
+
+        return RedirectToAction("ShowMessages", new { login });
     }
 
     public void SetReadStatus(int id, string login)
@@ -132,6 +140,8 @@ public class MessagesController : Controller
 
         ViewBag.Senders = msgList.Select(x => x.From).Distinct().ToList();
         ViewBag.Senders.Insert(0, "Все");
+        ViewBag.UserInfo = db.User.Where(x => x.Login == viewModel.Login).Select(x => new {Name = x.Surname + " " + x.Name + " " + x.Patronymic}).First();
+
         viewModel.Messages = FilterByStatus(msgList, viewModel.Filters.StatusFilter);
         viewModel.Messages = FilterBySender(viewModel.Messages, viewModel.Filters.SenderFilter);
         viewModel.Messages = FilterByDate(viewModel.Messages, viewModel.Filters.StartDate, viewModel.Filters.EndDate);

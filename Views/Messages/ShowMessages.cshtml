@@ -12,13 +12,14 @@
 "Прочитанные",
 "Непрочитанные"
 };
+    string Name = ViewBag.UserInfo.Name;
     @* var logins = Model.Messages.Select(x => x.From).Distinct(); *@
 }
 
 <!DOCTYPE html>
 <html>
 <body>
-    <h2>Список сообщений</h2>
+    <h2>Список сообщений пользователя @Name</h2>
 
     <div class="filters-form">
         @using (Html.BeginForm("FilterMessages", "Messages", Model))
@@ -95,7 +96,7 @@
                     @if (item.Status != "Прочитано" && item.From != Model.Login)
                     {
                         <span>|</span>
-                        @Html.ActionLink("Пометить прочитанным", "SetReadStatus", new { id = item.ID, login = item.To })
+                        @Html.ActionLink("Пометить прочитанным", "SetReadStatusWithRedirect", new { id = item.ID, login = item.To })
                     }
                 </td>
             </tr>
